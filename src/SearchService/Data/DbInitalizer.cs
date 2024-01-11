@@ -22,21 +22,17 @@ public class DbInitalizer
 
         var count = await DB.CountAsync<Item>();
 
-        if (count == 0) 
+        using var scope = app.Services.CreateScope();
+
+        var httpClient = scope.ServiceProvider.GetRequiredService<AuctionServicesHttpClient>();
+
+        var item = await httpClient.GetItemForSearchDb();
+
+        Console.WriteLine("Items from AuctionService: " + item.Count);
+
+        if (item.Count > 0) 
         {
-            Console.WriteLine("No data - will attempt to seed");
-            var itemData = await File.ReadAllTextAsync("Data/auctions.json");
-
-#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-
-            var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
-
-            await DB.SaveAsync(items);
+            await DB.SaveAsync(item);
         }
     }
 }
