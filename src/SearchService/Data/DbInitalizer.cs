@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Entities;
 using SearchService.Models;
 
-namespace SearchService;
+namespace SearchService.Data;
 
 public class DbInitalizer
 {
