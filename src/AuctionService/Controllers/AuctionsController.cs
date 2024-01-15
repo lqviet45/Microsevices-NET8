@@ -5,6 +5,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Contracts;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,11 +55,12 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto auctionDto)
     {
         var auction = _mapper.Map<Auction>(auctionDto);
         // TODO: Add current user as seller
-        auction.Seller = "test";
+        auction.Seller = User.Identity.Name;
 
         _context.Auctions.Add(auction);
 
@@ -78,6 +80,7 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<ActionResult> PutAuction(Guid id, UpdateAuctionDto auctionDto)
     {
         var auction = await _context.Auctions.Include(a => a.Item)
@@ -86,6 +89,8 @@ public class AuctionsController : ControllerBase
         if (auction is null) return NotFound($"Auction with id {id} was not found");
 
         // TODO: check seller eq username
+        if (auction.Seller != User.Identity.Name) 
+            return Forbid();
 
         auction.Item.Make = auctionDto.Make ?? auction.Item.Make;
         auction.Item.Model = auctionDto.Model ?? auction.Item.Model;
@@ -103,11 +108,15 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<ActionResult> DeleteAuction(Guid id)
     {
         var auction = await _context.Auctions.FindAsync(id);
 
         if (auction is null) return NotFound($"Auction with id {id} was not found");
+
+        if (auction.Seller != User.Identity.Name)
+            return Forbid();
 
         _context.Auctions.Remove(auction);
 
