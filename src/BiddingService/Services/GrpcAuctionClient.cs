@@ -9,7 +9,7 @@ public class GrpcAuctionClient(ILogger<GrpcAuctionClient> logger,
     public async Task<Auction> GetAuction(string id) 
     {
         logger.LogInformation("==========> GetAuctionGrpc called with id: {id}", id);
-        var channel = GrpcChannel.ForAddress(configuration["GrpcAuction"]);
+        var channel = GrpcChannel.ForAddress(configuration["GrpcAuction"] ?? string.Empty);
         var client = new GrpcAuction.GrpcAuctionClient(channel);
         var request = new GetAuctionRequest { Id = id };
 

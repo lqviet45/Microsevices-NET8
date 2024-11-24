@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using MongoDB.Driver;
 using MongoDB.Entities;
 using SearchService.Models;
+using SearchService.Services;
 
 namespace SearchService.Data;
 

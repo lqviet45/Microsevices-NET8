@@ -5,7 +5,7 @@ using MassTransit;
 
 namespace AuctionService;
 
-public class AuctionFinishedConsumer : IConsumer<AuctionFinished>
+public abstract class AuctionFinishedConsumer : IConsumer<AuctionFinished>
 {
     private readonly AuctionDbContext _dbContext;
 

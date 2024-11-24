@@ -3,9 +3,9 @@ using MassTransit;
 using MongoDB.Entities;
 using SearchService.Models;
 
-namespace SearchService;
+namespace SearchService.Consumers;
 
-public class AuctionFinishedConsumer : IConsumer<AuctionFinished>
+public abstract class AuctionFinishedConsumer : IConsumer<AuctionFinished>
 {
     public async Task Consume(ConsumeContext<AuctionFinished> context)
     {
@@ -17,7 +17,7 @@ public class AuctionFinishedConsumer : IConsumer<AuctionFinished>
         if (context.Message.ItemSold) 
         {
             aution.Winner = context.Message.Winner;
-            aution.SoldAmount = (int) context.Message.Amount;
+            aution.SoldAmount = context.Message.Amount ?? 0;
         }
 
         aution.Status = "Finished";

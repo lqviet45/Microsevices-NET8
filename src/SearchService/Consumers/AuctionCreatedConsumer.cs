@@ -4,13 +4,13 @@ using MassTransit;
 using MongoDB.Entities;
 using SearchService.Models;
 
-namespace SearchService;
+namespace SearchService.Consumers;
 
-public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
+public abstract class AuctionCreatedConsumer : IConsumer<AuctionCreated>
 {
     private readonly IMapper _mapper;
 
-    public AuctionCreatedConsumer(IMapper mapper)
+    protected AuctionCreatedConsumer(IMapper mapper)
     {
         _mapper = mapper;
     }

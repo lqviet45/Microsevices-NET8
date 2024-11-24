@@ -5,13 +5,13 @@ using IdentityModel;
 using IdentityService.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace IdentityService;
+namespace IdentityService.Services;
 
-public class CustomProfileService : IProfileService
+public abstract class CustomProfileService : IProfileService
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public CustomProfileService(UserManager<ApplicationUser> userManager)
+    protected CustomProfileService(UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
     }

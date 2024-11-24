@@ -3,7 +3,7 @@ using MassTransit;
 
 namespace AuctionService;
 
-public class AuctionCreatedFaultConsumer : IConsumer<Fault<AuctionCreated>>
+public abstract class AuctionCreatedFaultConsumer : IConsumer<Fault<AuctionCreated>>
 {
     public async Task Consume(ConsumeContext<Fault<AuctionCreated>> context)
     {

@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("customPolicy", b =>
     {
-        b.WithOrigins(builder.Configuration["ClientApp"])
+        b.WithOrigins(builder.Configuration["ClientApp"] ?? throw new InvalidOperationException())
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();

@@ -1,10 +1,11 @@
 ﻿using Contracts;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
+using NotificationService.Hubs;
 
-namespace NotificationService;
+namespace NotificationService.Consumers;
 
-public class BidPlacedConsumer(IHubContext<NotificationHub> hubContext) : IConsumer<BidPlaced>
+public abstract class BidPlacedConsumer(IHubContext<NotificationHub> hubContext) : IConsumer<BidPlaced>
 {
     private readonly IHubContext<NotificationHub> _hubContext = hubContext;
 
